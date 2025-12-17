@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Puzzle Solutions - Core Values</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e293b 0%, #334155 50%, #1e293b 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .header h1 {
+            color: white;
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            letter-spacing: -1px;
+        }
+
+        .header-underline {
+            height: 4px;
+            background: linear-gradient(90deg, #3b82f6 0%, #8b5cf6 50%, #ec4899 100%);
+            border-radius: 4px;
+            width: 200px;
+            margin: 0 auto 24px auto;
+        }
+
+        .tagline {
+            color: #cbd5e1;
+            font-size: 24px;
+            font-weight: 300;
+        }
+
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 24px;
+            margin-bottom: 48px;
+        }
+
+        .value-card {
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid #475569;
+            border-radius: 16px;
+            padding: 32px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .value-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            border-color: #64748b;
+        }
+
+        .value-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .value-card:hover::before {
+            opacity: 0.1;
+        }
+
+        .value-card.blue::before { background: linear-gradient(135deg, #3b82f6, #06b6d4); }
+        .value-card.green::before { background: linear-gradient(135deg, #10b981, #14b8a6); }
+        .value-card.orange::before { background: linear-gradient(135deg, #f97316, #ef4444); }
+        .value-card.indigo::before { background: linear-gradient(135deg, #6366f1, #3b82f6); }
+        .value-card.violet::before { background: linear-gradient(135deg, #8b5cf6, #a855f7); }
+        .value-card.pink::before { background: linear-gradient(135deg, #ec4899, #f43f5e); }
+        .value-card.cyan::before { background: linear-gradient(135deg, #06b6d4, #14b8a6); }
+
+        .badge {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 18px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .badge.blue { background: linear-gradient(135deg, #3b82f6, #06b6d4); }
+        .badge.green { background: linear-gradient(135deg, #10b981, #14b8a6); }
+        .badge.orange { background: linear-gradient(135deg, #f97316, #ef4444); }
+        .badge.indigo { background: linear-gradient(135deg, #6366f1, #3b82f6); }
+        .badge.violet { background: linear-gradient(135deg, #8b5cf6, #a855f7); }
+        .badge.pink { background: linear-gradient(135deg, #ec4899, #f43f5e); }
+        .badge.cyan { background: linear-gradient(135deg, #06b6d4, #14b8a6); }
+
+        .icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            font-size: 32px;
+            transition: transform 0.3s ease;
+        }
+
+        .value-card:hover .icon {
+            transform: rotate(6deg) scale(1.05);
+        }
+
+        .icon.blue { background: linear-gradient(135deg, #3b82f6, #06b6d4); }
+        .icon.green { background: linear-gradient(135deg, #10b981, #14b8a6); }
+        .icon.orange { background: linear-gradient(135deg, #f97316, #ef4444); }
+        .icon.indigo { background: linear-gradient(135deg, #6366f1, #3b82f6); }
+        .icon.violet { background: linear-gradient(135deg, #8b5cf6, #a855f7); }
+        .icon.pink { background: linear-gradient(135deg, #ec4899, #f43f5e); }
+        .icon.cyan { background: linear-gradient(135deg, #06b6d4, #14b8a6); }
+
+        .value-title {
+            color: white;
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            line-height: 1.3;
+        }
+
+        .value-subtitle {
+            color: #94a3b8;
+            font-size: 15px;
+            line-height: 1.5;
+        }
+
+        .accent-line {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+        }
+
+        .value-card:hover .accent-line {
+            transform: scaleX(1);
+        }
+
+        .accent-line.blue { background: linear-gradient(90deg, #3b82f6, #06b6d4); }
+        .accent-line.green { background: linear-gradient(90deg, #10b981, #14b8a6); }
+        .accent-line.orange { background: linear-gradient(90deg, #f97316, #ef4444); }
+        .accent-line.indigo { background: linear-gradient(90deg, #6366f1, #3b82f6); }
+        .accent-line.violet { background: linear-gradient(90deg, #8b5cf6, #a855f7); }
+        .accent-line.pink { background: linear-gradient(90deg, #ec4899, #f43f5e); }
+        .accent-line.cyan { background: linear-gradient(90deg, #06b6d4, #14b8a6); }
+
+        .mission {
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid #475569;
+            border-radius: 16px;
+            padding: 48px;
+            text-align: center;
+        }
+
+        .mission-badge {
+            display: inline-block;
+            padding: 8px 24px;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+            border-radius: 24px;
+            margin-bottom: 24px;
+        }
+
+        .mission-badge span {
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+            letter-spacing: 1px;
+        }
+
+        .mission-text {
+            color: #e2e8f0;
+            font-size: 22px;
+            font-weight: 300;
+            line-height: 1.6;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 36px;
+            }
+            
+            .tagline {
+                font-size: 20px;
+            }
+
+            .values-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .mission {
+                padding: 32px 24px;
+            }
+
+            .mission-text {
+                font-size: 18px;
+            }
+        }
+
+        @media print {
+            body {
+                background: white;
+            }
+
+            .value-card {
+                break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>Core Values</h1>
+            <div class="header-underline"></div>
+            <p class="tagline">Direct. Practical. Human.</p>
+        </div>
+
+        <!-- Values Grid -->
+        <div class="values-grid">
+            <!-- Value 1 -->
+            <div class="value-card blue">
+                <div class="badge blue">01</div>
+                <div class="icon blue">⚡</div>
+                <h3 class="value-title">Best customer service experience</h3>
+                <p class="value-subtitle">Empower ourselves to fix problems and say YES</p>
+                <div class="accent-line blue"></div>
+            </div>
+
+            <!-- Value 2 -->
+            <div class="value-card green">
+                <div class="badge green">02</div>
+                <div class="icon green">🎯</div>
+                <h3 class="value-title">Progress over perfection</h3>
+                <p class="value-subtitle">Keep moving forward</p>
+                <div class="accent-line green"></div>
+            </div>
+
+            <!-- Value 3 -->
+            <div class="value-card orange">
+                <div class="badge orange">03</div>
+                <div class="icon orange">🔧</div>
+                <h3 class="value-title">Work smarter AND harder</h3>
+                <p class="value-subtitle">Both matter</p>
+                <div class="accent-line orange"></div>
+            </div>
+
+            <!-- Value 4 -->
+            <div class="value-card indigo">
+                <div class="badge indigo">04</div>
+                <div class="icon indigo">👁️</div>
+                <h3 class="value-title">Details matter</h3>
+                <p class="value-subtitle">Excellence in execution</p>
+                <div class="accent-line indigo"></div>
+            </div>
+
+            <!-- Value 5 -->
+            <div class="value-card violet">
+                <div class="badge violet">05</div>
+                <div class="icon violet">🧠</div>
+                <h3 class="value-title">Remember shit, create a system</h3>
+                <p class="value-subtitle">Build processes that scale</p>
+                <div class="accent-line violet"></div>
+            </div>
+
+            <!-- Value 6 -->
+            <div class="value-card pink">
+                <div class="badge pink">06</div>
+                <div class="icon pink">❤️</div>
+                <h3 class="value-title">Random acts of kindness</h3>
+                <p class="value-subtitle">Be human</p>
+                <div class="accent-line pink"></div>
+            </div>
+
+            <!-- Value 7 -->
+            <div class="value-card cyan">
+                <div class="badge cyan">07</div>
+                <div class="icon cyan">⏱️</div>
+                <h3 class="value-title">Urgency and consistency</h3>
+                <p class="value-subtitle">Move fast, stay reliable</p>
+                <div class="accent-line cyan"></div>
+            </div>
+        </div>
+
+        <!-- Mission -->
+        <div class="mission">
+            <div class="mission-badge">
+                <span>OUR MISSION</span>
+            </div>
+            <p class="mission-text">
+                We help firms reclaim time and unlock growth by building efficient, reliable, and scalable 
+                workflow systems that remove friction from everyday work.
+            </p>
+        </div>
+    </div>
+</body>
+</html>
